@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script.js"></script>
+    <link href="style.css" rel="stylesheet">
+</head>
+<div id="main">
+    <div id="assortment">
+        <div style="float: left;">
+            <h3>Малый бургер</h3>
+            <div style="float: left">
+                <label><input title="cheese" type="checkbox" id="smallCheese" checked> Сыр </label>
+                <label><input title="salad" type="checkbox" id="smallSalad"> Салат </label>
+                <label><input title="potato" type="checkbox" id="smallPotato"> Картошка </label>
+                <label><input title="spice" type="checkbox" id="smallSpice"> Специи </label>
+                <label><input title="mayonnaise" type="checkbox" id="smallMayonnaise"> Майонез </label>
+                <p>
+                    <input type="button" value="Добавить" onclick="CreateBurger('small')">
+            </div>
+            <div class="icon" style="background-image: url('img/small.jpg')"></div>
+        </div>
+        <div style="float: right">
+            <h3>Большой бургер</h3>
+            <div style="float: left">
+                <label><input title="cheese" type="checkbox" id="bigCheese" checked> Сыр </label>
+                <label><input title="salad" type="checkbox" id="bigSalad"> Салат </label>
+                <label><input title="potato" type="checkbox" id="bigPotato"> Картошка </label>
+                <label><input title="spice" type="checkbox" id="bigSpice"> Специи </label>
+                <label><input title="mayonnaise" type="checkbox" id="bigMayonnaise"> Майонез </label>
+                <p>
+                    <input type="button" value="Добавить" onclick="CreateBurger('big')">
+            </div>
+            <div class="icon" style="background-image: url('img/big.jpg')"></div>
+        </div>
+    </div>
+    <div id="basket">
+        <table id="content">
+            <tr>
+                <th>Тип</th>
+                <th>Сыр</th>
+                <th>Салат</th>
+                <th>Картошка</th>
+                <th>Специи</th>
+                <th>Майонез</th>
+                <th>Цена</th>
+                <th>Каллории</th>
+            </tr>
+        </table>
+    </div>
+    <div id="calc">
+        <div> Общая цена: 0 </div>
+        <div> Всего колорий: 0 </div>
+    </div>
+</div>
+</body>
+</html>
