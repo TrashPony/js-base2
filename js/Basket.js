@@ -1,16 +1,16 @@
-function Basket(items = []) {
-    this.cost = 0;
-    this.items = items;
-    this.addItems = function (items = []) {
-        this.items = this.items.concat(items)
-    };
-    this.removeItems = function (items = []) {
+class Basket {
+    constructor(items = []) {
+        this.items = items;
+    }
 
+    addItems(items = []) {
+        this.items = this.items.concat(items);
     };
-    this.getItems = function () {
+
+    removeItems(items = []) {
+    };
+
+    getItems() {
         return this.items
-    };
-    this.getCost = function () {
-        return this.cost
     };
 }
