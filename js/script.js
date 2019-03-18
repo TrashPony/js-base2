@@ -5,7 +5,9 @@ const goods = [
     {title: 'Shoes'}, // у Shoes нет price, значение подставится из аргумента по умолчанию
 ];
 
-const renderGoodsItem = (title, price = 250) =>
+const DEFAULT_PRICE = 250;
+
+const renderGoodsItem = (title, price = DEFAULT_PRICE) =>
     `<div class="goods-item">
         <div class="icon"></div>
         <h3>${title}</h3>
@@ -20,4 +22,19 @@ const renderGoodsList = list => {
 
 window.onload = () => {
     renderGoodsList(goods);
+
+    let GoodsList = document.querySelector('.goods-list');
+    GoodsList.sumAllItem = function () {
+        let sum = 0;
+        for (let i in goods) {
+            if (goods[i].price) {
+                sum += goods[i].price
+            } else {
+                sum += DEFAULT_PRICE
+            }
+        }
+        return sum
+    };
+
+    console.log(GoodsList.sumAllItem());
 };
