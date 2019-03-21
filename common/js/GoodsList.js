@@ -1,6 +1,8 @@
 class GoodsList {
     constructor() {
-        this.goods = []
+        this.goods = [];
+        this.filterGoods = [];
+        this.filter = '';
     }
 
     fetchGoods() {
@@ -27,17 +29,31 @@ class GoodsList {
         return sum
     };
 
+    FilterGoods() {
+        this.filterGoods = [];
+        for (let i in this.goods) {
+            if (this.goods[i].title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0 || this.filter === '') {
+                this.filterGoods.push(this.goods[i]);
+            }
+        }
+    }
+
     render() {
+        this.FilterGoods();
         document.querySelector('.goods-list').innerHTML = '';
-        let goodsList = this.goods.map(item => {
-            return `<div class="goods-item">
+        if (this.filterGoods.length > 0) {
+            let goodsList = this.filterGoods.map(item => {
+                return `<div class="goods-item">
                 <div class="icon"></div>
                 <h3>${item.title}</h3>
                 <p>${item.price}</p>
                 <div class="buttonToCart" id="${item.title}">Купить</div>
             </div>`
-        });
-        document.querySelector('.goods-list').innerHTML = goodsList.join('');
+            });
+            document.querySelector('.goods-list').innerHTML = goodsList.join('');
+        } else {
+            document.querySelector('.goods-list').innerHTML = 'Нет данных!';
+        }
 
         for (let i in this.goods) {
             let button = document.getElementById(this.goods[i].title);
