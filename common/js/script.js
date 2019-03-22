@@ -43,3 +43,26 @@ function makeGetRequest(url) {
         }
     });
 }
+
+let app = new Vue({
+    el: '#app',
+    data: {
+        filter: '',
+        isVisibleCart: {
+            visibility: 'hidden'
+        }
+    },
+    methods: {
+        search: function () {
+            goodsItems.filter = this.filter;
+            goodsItems.render();
+        },
+        visibleBasket: function () {
+            if (this.isVisibleCart.visibility === 'hidden') {
+                this.isVisibleCart.visibility = 'visible'
+            } else {
+                this.isVisibleCart.visibility = 'hidden'
+            }
+        }
+    }
+});

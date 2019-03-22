@@ -12,12 +12,19 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
-<header>
-    <button class="cart-button"></button>
-</header>
-<main>
-    <div class="goods-list">
+<div id="app">
+    <header>
+        <button class="cart-button" v-on:click="visibleBasket"></button>
+        <label> Поиск: <input v-model="filter" type="text" title="search" v-on:input="search"></label>
+    </header>
+    <main>
+        <div class="goods-list"></div>
+    </main>
+    <div id="basket" v-bind:style="isVisibleCart">
+        <div id="itemsPool">
+        </div>
     </div>
-</main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>
