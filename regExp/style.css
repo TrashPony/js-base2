@@ -1,0 +1,52 @@
+#app, #contacts {
+    margin: 0 auto;
+    width: 400px;
+}
+
+#contacts {
+    width: 300px;
+}
+
+#output {
+    width: 400px;
+    height: 250px;
+    border: 1px solid black;
+    box-shadow: 0 0 5px black;
+    background: #aeb2b4;
+}
+
+#input {
+    height: 150px;
+    width: 400px;
+    box-shadow: inset 0 0 5px black;
+    background: #b4e5ff;
+}
+
+#contacts div, #contacts div label {
+    width: 300px;
+    float: left;
+}
+
+#contacts input, #contacts textarea {
+    float: right;
+    width: 200px;
+    padding: 0;
+    margin: 0;
+    border: 1px solid grey;
+}
+
+#contacts input[type = "button"] {
+    width: 100px;
+    margin-left: calc(50% - 50px);
+    margin-top: 10px;
+    float: left;
+    transition: 0.2s;
+}
+
+#contacts input[type = "button"]:hover {
+    background: #8cb3c7;
+}
+
+#contacts input[type = "button"]:active {
+    transform: scale(0.95);
+}
