@@ -7,7 +7,6 @@
     <title>eShop</title>
     <script defer src="js/script.js"></script>
     <script src="js/Basket.js"></script>
-    <script src="js/GoodsList.js"></script>
     <script src="js/Item.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
@@ -15,10 +14,17 @@
 <div id="app">
     <header>
         <button class="cart-button" v-on:click="visibleBasket"></button>
-        <label> Поиск: <input v-model="filter" type="text" title="search" v-on:input="search"></label>
+        <search-input v-model="filter"></search-input>
     </header>
     <main>
-        <div class="goods-list"></div>
+        <div class="goods-list">
+            <div class="goods-item" v-for="item in filteredGoods">
+                <div class="icon"></div>
+                <h3>{{item.title}}</h3>
+                <p>{{item.price}}</p>
+                <div class="buttonToCart">Купить</div>
+            </div>
+        </div>
     </main>
     <div id="basket" v-bind:style="isVisibleCart">
         <div id="itemsPool">
