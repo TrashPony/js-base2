@@ -1,12 +1,21 @@
 let basket = new Basket();
 
-
 Vue.component('search-input', {
-    props: ['filter'],
     template: '' +
         '<div>' +
-        '<label> Поиск: <input type="text" title="search" v-on:input="$emit(\'search\')"></label>' +
+        '<label> Поиск: <input v-on:input="$emit(\'input\', $event.target.value)" type="text" title="search"></label>' +
+        '</div>',
+});
+
+Vue.component('basket', {
+    template: '' +
+        '<div id="basket">' +
+        '   <div id="itemsPool"></div>' +
         '</div>'
+});
+
+Vue.component('alert', {
+    template: '<div id="alert"> Не судьба. ¯\\_(ツ)_/¯</div>'
 });
 
 let app = new Vue({
@@ -15,12 +24,11 @@ let app = new Vue({
         goods: [],
         filteredGoods: [],
         filter: '',
-        isVisibleCart: {
-            visibility: 'hidden'
-        }
+        isVisibleCart: false,
     },
     methods: {
-        search: function () {
+        search: function (filter) {
+            this.filter = filter;
             this.filteredGoods = [];
             for (let i in this.goods) {
                 if (this.goods[i].title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0 || this.filter === '') {
@@ -29,11 +37,7 @@ let app = new Vue({
             }
         },
         visibleBasket: function () {
-            if (this.isVisibleCart.visibility === 'hidden') {
-                this.isVisibleCart.visibility = 'visible'
-            } else {
-                this.isVisibleCart.visibility = 'hidden'
-            }
+            this.isVisibleCart = !this.isVisibleCart
         },
         getGoods: function (url) {
             return new Promise(function (resolve, reject) {
