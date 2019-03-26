@@ -1,68 +1,72 @@
-const DEFAULT_PRICE = 250;
-let goodsItems = new GoodsList();
-
 let basket = new Basket();
 
-window.onload = () => {
-    let promise = goodsItems.fetchGoods();
+Vue.component('search-input', {
+    template: '' +
+        '<div>' +
+        '<label> Поиск: <input v-on:input="$emit(\'input\', $event.target.value)" type="text" title="search"></label>' +
+        '</div>',
+});
 
-    promise.then(result => {
-            goodsItems.render();
-        },
-        error => {
-            console.log(error)
-        },
-    );
-};
+Vue.component('basket', {
+    template: '' +
+        '<div id="basket">' +
+        '   <div id="itemsPool"></div>' +
+        '</div>'
+});
 
-sendHttp();
-
-function sendHttp() {
-    let promise = makeGetRequest('http://localhost:8080/');
-    promise.then(result => {
-            console.log(result)
-        },
-        error => {
-            console.log(error)
-        },
-    );
-}
-
-function makeGetRequest(url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.send();
-
-        xhr.onreadystatechange = function () {
-            if (xhr.status === 200) {
-                resolve(xhr);
-            } else {
-                reject("ololo");
-            }
-        }
-    });
-}
+Vue.component('alert', {
+    template: '<div id="alert"> Не судьба. ¯\\_(ツ)_/¯</div>'
+});
 
 let app = new Vue({
     el: '#app',
     data: {
+        goods: [],
+        filteredGoods: [],
         filter: '',
-        isVisibleCart: {
-            visibility: 'hidden'
-        }
+        isVisibleCart: false,
     },
     methods: {
-        search: function () {
-            goodsItems.filter = this.filter;
-            goodsItems.render();
+        search: function (filter) {
+            this.filter = filter;
+            this.filteredGoods = [];
+            for (let i in this.goods) {
+                if (this.goods[i].title.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0 || this.filter === '') {
+                    this.filteredGoods.push(this.goods[i]);
+                }
+            }
         },
         visibleBasket: function () {
-            if (this.isVisibleCart.visibility === 'hidden') {
-                this.isVisibleCart.visibility = 'visible'
-            } else {
-                this.isVisibleCart.visibility = 'hidden'
+            this.isVisibleCart = !this.isVisibleCart
+        },
+        getGoods: function (url) {
+            return new Promise(function (resolve, reject) {
+                let goods = [
+                    {title: 'Shirt', price: 150},
+                    {title: 'Socks', price: 50},
+                    {title: 'Jacket', price: 350},
+                    {title: 'Shoes', price: 350},
+                ];
+                resolve(goods);
+            });
+        },
+        countPrice() {
+            let sum = 0;
+            for (let i in this.goods) {
+                sum += this.goods[i].price
             }
-        }
+            return sum
+        },
+    },
+    created: function () {
+        let promise = this.getGoods('http://localhost:8080/');
+        promise.then(result => {
+                this.goods = result;
+                this.filteredGoods = result;
+            },
+            error => {
+                console.log(error)
+            },
+        );
     }
 });

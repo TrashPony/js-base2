@@ -40,7 +40,7 @@ main {
 
 }
 
-main .goods-list, #basket {
+main .goods-list, #basket, #alert {
     clear: both;
     margin: 30px auto;
     display: grid;
@@ -144,7 +144,6 @@ header input {
     position: absolute;
     width: 200px;
     height: 200px;
-    visibility: hidden;
     right: 150px;
     top: 70px;
     display: block;
@@ -154,4 +153,15 @@ header input {
 #itemsPool {
     height: 100%;
     width: 100%;
+}
+
+#alert {
+    position: absolute;
+    width: 120px;
+    height: 50px;
+    left: 50px;
+    top: 90px;
+    line-height: 24px;
+    color: #ff4341;
+    text-shadow: 0 -1px 1px #000000, 0 -1px 1px #000000, 0 1px 1px #000000, 0 1px 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px 0 1px #000000, 1px 0 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000, -1px -1px 1px #000000, 1px -1px 1px #000000, -1px 1px 1px #000000, 1px 1px 1px #000000;
 }
