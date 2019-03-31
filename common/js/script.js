@@ -1,5 +1,3 @@
-let basket = new Basket();
-
 Vue.component('search-input', {
     template: '' +
         '<div>' +
@@ -8,9 +6,17 @@ Vue.component('search-input', {
 });
 
 Vue.component('basket', {
+    props: ['basket'],
     template: '' +
         '<div id="basket">' +
-        '   <div id="itemsPool"></div>' +
+        '   <div id="itemsPool">' +
+        '       <div id="basketPanel">Сумма = {{basket.amount}} <input type="button" value="Очистить" v-on:click="$emit(\'clear\')"></div>' +
+        '       <div id="basketItems" v-for="item in basket.contents">' +
+        '           <span class="itemName">{{item.title}} </span>' +
+        '           <input type="button" value="Удалить" v-on:click="$emit(\'delete\', item)">' +
+        '           <span class="itemCount"> x{{item.quantity}} </span> ' +
+        '       </div>' +
+        '   </div>' +
         '</div>'
 });
 
@@ -25,6 +31,11 @@ let app = new Vue({
         filteredGoods: [],
         filter: '',
         isVisibleCart: false,
+        basket: {
+            amount: 0,
+            countGoods: 0,
+            contents: [],
+        }
     },
     methods: {
         search: function (filter) {
@@ -39,34 +50,78 @@ let app = new Vue({
         visibleBasket: function () {
             this.isVisibleCart = !this.isVisibleCart
         },
-        getGoods: function (url) {
-            return new Promise(function (resolve, reject) {
-                let goods = [
-                    {title: 'Shirt', price: 150},
-                    {title: 'Socks', price: 50},
-                    {title: 'Jacket', price: 350},
-                    {title: 'Shoes', price: 350},
-                ];
-                resolve(goods);
-            });
+        makeXHR: function (url, method, data) {
+            return new Promise((resolve, reject) => {
+                const xhr = window.XMLHttpRequest
+                    ? new window.XMLHttpRequest() : new window.ActiveXObject();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4) {
+                        if (xhr.status === 200) {
+                            resolve(JSON.parse(xhr.responseText))
+                        }
+                        reject(new Error())
+                    }
+                };
+
+                xhr.open(method, url, true);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                xhr.send(data)
+            })
         },
-        countPrice() {
-            let sum = 0;
-            for (let i in this.goods) {
-                sum += this.goods[i].price
-            }
-            return sum
+        getGoods: function () {
+            let promise = this.makeXHR('http://localhost:3000/catalogData', 'GET');
+            promise.then(result => {
+                    this.goods = result;
+                    this.filteredGoods = result;
+                },
+                error => {
+                    console.log(error)
+                },
+            );
         },
+        getBasket: function () {
+            let promise = this.makeXHR('http://localhost:3000/getBasket', 'GET');
+            promise.then(result => {
+                    this.basket = result
+                },
+                error => {
+                    console.log(error)
+                },
+            );
+        },
+        addToCart: function (item) {
+            let promise = this.makeXHR('http://localhost:3000/addToCart', 'POST', JSON.stringify(item));
+            promise.then(result => {
+                    this.getBasket()
+                },
+                error => {
+                    console.log(error)
+                },
+            );
+        },
+        removeFromCart: function (item) {
+            let promise = this.makeXHR('http://localhost:3000/deleteFromBasket', 'POST', JSON.stringify(item));
+            promise.then(result => {
+                    this.getBasket()
+                },
+                error => {
+                    console.log(error)
+                },
+            );
+        },
+        clearBasket: function () {
+            let promise = this.makeXHR('http://localhost:3000/deleteAllBasket', 'POST');
+            promise.then(result => {
+                    this.getBasket()
+                },
+                error => {
+                    console.log(error)
+                },
+            );
+        }
     },
     created: function () {
-        let promise = this.getGoods('http://localhost:8080/');
-        promise.then(result => {
-                this.goods = result;
-                this.filteredGoods = result;
-            },
-            error => {
-                console.log(error)
-            },
-        );
+        this.getGoods();
+        this.getBasket();
     }
 });

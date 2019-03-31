@@ -6,8 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>eShop</title>
     <script defer src="js/script.js"></script>
-    <script src="js/Basket.js"></script>
-    <script src="js/Item.js"></script>
     <link href="style.css" rel="stylesheet">
 </head>
 <body>
@@ -24,7 +22,7 @@
                     <div class="icon"></div>
                     <h3>{{item.title}}</h3>
                     <p>{{item.price}}</p>
-                    <div class="buttonToCart">Купить</div>
+                    <div class="buttonToCart" @click="addToCart(item)">Купить</div>
                 </div>
             </template>
             <template v-else>
@@ -32,7 +30,7 @@
             </template>
         </div>
     </main>
-    <basket v-if="isVisibleCart"></basket>
+    <basket v-if="isVisibleCart" v-on:delete="removeFromCart" v-on:clear="clearBasket" v-bind:basket="basket"></basket>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
